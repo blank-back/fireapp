@@ -9,6 +9,7 @@ import com.testapp.template.GlobalVariable;
 
 public class globalhelper {
     sqlitehelper helpor;
+
     public globalhelper(sqlitehelper helpor){
         this.helpor= helpor;
     }
@@ -29,16 +30,18 @@ public class globalhelper {
     }
     public GlobalVariable read() {
         GlobalVariable tmp = new GlobalVariable();
-        SQLiteDatabase db = helpor.getReadableDatabase();
+        tmp.setFilepath("");
+        tmp.setAccount("");
+        tmp.setLoginState(false);
+        SQLiteDatabase db = helpor.getWritableDatabase();
         Cursor query = db.query("global", new String[]{"login_state","account","filepath"}, "id=?", new String[]{"1"}, null, null, null);
         if (query.moveToFirst()) {
-            tmp.setLoginState(query.getInt(1)==1?true:false);
-            tmp.setAccount(query.getString(2));
-            tmp.setFilepath(query.getString(3));
+            tmp.setLoginState(query.getInt(0)==1?true:false);
+            tmp.setAccount(query.getString(1));
             return tmp;
         } else {
             Log.d("info","没找到！");
-            return null;
+            return tmp;
         }
     }
 }

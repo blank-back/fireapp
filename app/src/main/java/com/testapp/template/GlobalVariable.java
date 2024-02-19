@@ -1,5 +1,6 @@
 package com.testapp.template;
 
+import android.util.Log;
 import com.testapp.template.db.globalhelper;
 import com.testapp.template.db.sqlitehelper;
 
@@ -22,6 +23,7 @@ public class GlobalVariable {
             instance.filepath="";
             instance.account="";
             instance.helpor=null;
+            instance.gh=null;
         }
         return instance;
     }
@@ -32,6 +34,7 @@ public class GlobalVariable {
 
     public void setLoginState(boolean login_state) {
         this.login_state = login_state;
+        if(gh!=null)
         gh.crat(this);
     }
 
@@ -41,7 +44,8 @@ public class GlobalVariable {
 
     public void setFilepath(String filepath) {
         this.filepath = filepath;
-        gh.crat(this);
+        if(gh!=null)
+            gh.crat(this);
     }
 
     public sqlitehelper getsqlite() {
@@ -50,7 +54,8 @@ public class GlobalVariable {
 
     public void setsqlite(sqlitehelper helpor) {
         this.helpor = helpor;
-        gh=new globalhelper(helpor);
+        this.gh=new globalhelper(helpor);
+        Log.d("info",gh==null?"null":"non-null");
     }
 
     public String getAccount() {
@@ -59,7 +64,8 @@ public class GlobalVariable {
 
     public void setAccount(String account) {
         this.account = account;
-        gh.crat(this);
+        if(gh!=null)
+            gh.crat(this);
     }
     public void update()
     {

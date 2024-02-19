@@ -7,20 +7,20 @@ import android.support.annotation.Nullable;
 
 public class sqlitehelper extends SQLiteOpenHelper {
 
-    public static String CREATE_USER = "create table user (" +
+    public static String CREATE_USER = "create table if not exists user (" +
             "account text primary key," +
             "password text)";
-    public static String CREATE_SETTING = "create table setting (" +
+    public static String CREATE_SETTING = "create table if not exists setting (" +
             "account text primary key," +
             "test1 bool," +
             "test2 bool," +
             "test3 bool)";
-    public static String CREATE_HISTORY = "create table history (" +
+    public static String CREATE_HISTORY = "create table if not exists history (" +
             "id integer primary key autoincrement," +
             "time datetime," +
             "account text," +
             "answer text)";
-    public static String CREATE_GLOBAL = "create table global (" +
+    public static String CREATE_GLOBAL = "create table if not exists global (" +
             "id integer primary key," +
             "login_state bool," +
             "account text," +
@@ -43,10 +43,10 @@ public class sqlitehelper extends SQLiteOpenHelper {
 
     @Override
     public  void  onUpgrade(SQLiteDatabase db,  int  oldVersion,  int  newVersion) {
-        db.execSQL("drop table if exists user");
+        /*db.execSQL("drop table if exists user");
         db.execSQL("drop table if exists setting");
         db.execSQL("drop table if exists history");
         db.execSQL("drop table if exists global");
-        onCreate(db);
+        onCreate(db);*/
     }
 }
