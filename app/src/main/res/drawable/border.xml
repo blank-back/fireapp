@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+<solid android:color="#FFFFFF" /> <!-- 控件的背景颜色 -->
+<corners android:radius="8dp" /> <!-- 控件的圆角半径 -->
+<stroke android:width="2dp"
+    android:color="@color/color_nav_item_selected"/>
+<padding
+    android:left="4dp"
+    android:top="4dp"
+    android:right="4dp"
+    android:bottom="4dp" /> <!-- 控件的内边距 -->
+</shape>

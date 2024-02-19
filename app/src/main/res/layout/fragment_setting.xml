@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.SettingFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <Button
+        android:id="@+id/setting_savebtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="500dp"
+        android:layout_gravity="center_horizontal"
+        android:textSize="18sp"
+        android:text="保存" />
+
+    <LinearLayout
+        android:layout_width="60dp"
+        android:layout_height="430dp"
+        android:layout_marginLeft="250dp"
+        android:orientation="vertical">
+
+        <Switch
+            android:id="@+id/setting_switch1"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="40dp"
+            android:showText="true"
+            android:textOff="关"
+            android:textOn="开"
+            android:textSize="18dp" />
+
+        <Switch
+            android:id="@+id/setting_switch2"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="40dp"
+            android:showText="true"
+            android:textOff="关"
+            android:textOn="开"
+            android:textSize="18dp" />
+
+        <Switch
+            android:id="@+id/setting_switch3"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="40dp"
+            android:showText="true"
+            android:textOff="关"
+            android:textOn="开"
+            android:textSize="18dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="120dp"
+        android:layout_height="430dp"
+        android:layout_marginStart="50dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/settingtext_one"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/border"
+            android:ems="10"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:text="设置一"
+            android:textSize="18dp" />
+
+        <EditText
+            android:id="@+id/settingtext_two"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/border"
+            android:ems="10"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:text="设置二"
+            android:textSize="18dp" />
+
+        <EditText
+            android:id="@+id/settingtext_three"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/border"
+            android:ems="10"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:text="设置三"
+            android:textSize="18dp" />
+    </LinearLayout>
+
+
+
+</FrameLayout>
