@@ -6,10 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import android.util.Log;
 import com.testapp.template.GlobalVariable;
-import com.testapp.template.fragment.BlankFragment;
-import com.testapp.template.fragment.ForloginFragment2;
-import com.testapp.template.fragment.LoginalFragment2;
-import com.testapp.template.fragment.MainFragment;
+import com.testapp.template.fragment.*;
 
 /**
  * Created by testapp.
@@ -29,6 +26,9 @@ public class ThreeFragmentPageAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         Log.d("getitem","reached");
         if(GlobalVariable.getInstance().getLoginState()) {
+            if(GlobalVariable.getInstance().getManager())
+                mFragment = new ManagerFragment2();
+            else
             mFragment = new LoginalFragment2();
             Log.d("getitem","loginal");
         }
@@ -46,6 +46,6 @@ public class ThreeFragmentPageAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 }

@@ -20,6 +20,7 @@ public class globalhelper {
         values.put("login_state",user.getLoginState());
         values.put("account",user.getAccount());
         values.put("filepath",user.getFilepath());
+        values.put("manager",user.getManager()?1:0);
         long i;
         Cursor query = db.query("global", null, "id=?",new String[]{"1"}, null, null, null);
         if(query.moveToFirst())
@@ -33,11 +34,13 @@ public class globalhelper {
         tmp.setFilepath("");
         tmp.setAccount("");
         tmp.setLoginState(false);
+        tmp.setManager(false);
         SQLiteDatabase db = helpor.getWritableDatabase();
-        Cursor query = db.query("global", new String[]{"login_state","account","filepath"}, "id=?", new String[]{"1"}, null, null, null);
+        Cursor query = db.query("global", new String[]{"login_state","account","filepath","manager"}, "id=?", new String[]{"1"}, null, null, null);
         if (query.moveToFirst()) {
             tmp.setLoginState(query.getInt(0)==1?true:false);
             tmp.setAccount(query.getString(1));
+            tmp.setManager(query.getInt(3)==1?true:false);
             return tmp;
         } else {
             Log.d("info","没找到！");

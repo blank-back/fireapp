@@ -2,6 +2,8 @@ package com.testapp.template.ui;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Environment;
@@ -93,6 +95,14 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         GlobalVariable.getInstance().setsqlite(mySQLiteOpenHelper);
         GlobalVariable.getInstance().update();
         GlobalVariable.getInstance().setFilepath(filePath);
+        Cursor query=db.query("setting",new String[]{"test1"},null,null,null,null,null);
+        if(query.moveToFirst())
+        {
+            updatetheme(query.getInt(0)==1?true:false);
+        }
+        else{
+            updatetheme(false);
+        }
         //filePath = getFilesDir().getPath();
         if(!new File(filePath+"/"+R.string.cache_location).exists()) {
             new File(filePath + "/"+R.string.cache_location).mkdirs();
@@ -258,6 +268,31 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                 break;
             default:
                 break;
+        }
+    }
+    @Override
+    public void onConfigurationChanged(Configuration config) {
+        super.onConfigurationChanged(config);
+        int currentNightMode = config.uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        switch (currentNightMode) {
+            case Configuration.UI_MODE_NIGHT_NO:
+                Log.d(TAG, "Night mode not activated");
+                break;
+            case Configuration.UI_MODE_NIGHT_YES:
+                Log.d(TAG, "Night mode activated");
+                break;
+        }
+    }
+
+    public void updatetheme(boolean night)
+    {
+        Configuration config=new Configuration();
+        if(night)
+        {
+            config.uiMode=32;
+        }
+        else{
+            config.uiMode=16;
         }
     }
 

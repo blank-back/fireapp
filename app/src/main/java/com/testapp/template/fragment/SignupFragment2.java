@@ -86,7 +86,7 @@ public class SignupFragment2 extends Fragment {
             public void onClick(View view) {
                 InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                if(!new accounthelper(getActivity()).crat(new account(acc.getText().toString(),pwd.getText().toString())))
+                if(!new accounthelper(getActivity()).crat(new account(acc.getText().toString(),pwd.getText().toString(),false)))
                 {
                     Toast.makeText(getActivity(),"注册失败，账户名重复",Toast.LENGTH_SHORT).show();
                     return;

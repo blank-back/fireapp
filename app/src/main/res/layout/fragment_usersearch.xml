@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp">
+    <Button
+        android:id="@+id/manage_ret"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/ret" />
+    <EditText
+        android:id="@+id/search_name"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textColor="#FFAD33"
+        android:textSize="16sp"
+        android:hint="用户名"
+        android:background="@drawable/login_bg"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:layout_marginTop="75dp"/>
+
+    <!--    设置登陆按钮-->
+    <Button
+        android:id="@+id/btn_search"
+        android:layout_width="200dp"
+        android:layout_centerHorizontal="true"
+        android:layout_height="50dp"
+        android:layout_below="@id/search_name"
+        android:layout_marginTop="50dp"
+        android:background="@android:color/holo_blue_bright"
+        android:hint="查找"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp" />
+    <TextView
+        android:id="@+id/search_answ"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@id/btn_search"
+        android:layout_marginTop="50dp"
+        android:hint="输出查询结果"
+        android:background="@drawable/border"
+        android:textColor="#000000"
+        android:textSize="20sp" />
+
+
+</RelativeLayout>

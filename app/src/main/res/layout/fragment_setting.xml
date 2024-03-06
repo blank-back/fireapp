@@ -71,7 +71,7 @@
             android:ems="10"
             android:focusable="false"
             android:focusableInTouchMode="false"
-            android:text="设置一"
+            android:text="夜间模式"
             android:textSize="18dp" />
 
         <EditText
@@ -84,7 +84,7 @@
             android:ems="10"
             android:focusable="false"
             android:focusableInTouchMode="false"
-            android:text="设置二"
+            android:text="护眼模式"
             android:textSize="18dp" />
 
         <EditText

@@ -1,5 +1,6 @@
 package com.testapp.template.fragment;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -7,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 import com.testapp.template.GlobalVariable;
 import com.testapp.template.R;
 import com.testapp.template.db.settings;
 import com.testapp.template.db.settingshelper;
+import com.testapp.template.ui.MainActivity;
 import com.testapp.template.util.ReadTxtFile;
 
 import java.io.*;
@@ -69,20 +72,36 @@ public class SettingFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         helper=new settingshelper(getActivity());
-        View view=inflater.inflate(R.layout.fragment_setting, container, false);
-        Button button=view.findViewById(R.id.setting_savebtn);
-        button.setOnClickListener(new View.OnClickListener() {
+        final View view=inflater.inflate(R.layout.fragment_setting, container, false);
+        final Button button=view.findViewById(R.id.setting_savebtn);
+        final Switch tmp1=view.findViewById(R.id.setting_switch1);
+        final Switch tmp2=view.findViewById(R.id.setting_switch2);
+        final Switch tmp3=view.findViewById(R.id.setting_switch3);
+        final Switch daynight=view.findViewById(R.id.setting_switch1);
+        view.post(new Runnable() {
             @Override
-            public void onClick(View view) {
-                if(!GlobalVariable.getInstance().getLoginState())
-                {
-                    Toast.makeText(getActivity(),"请前往个人中心进行登录",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                Switch tmp1=view.findViewById(R.id.setting_switch1);
-                Switch tmp2=view.findViewById(R.id.setting_switch2);
-                Switch tmp3=view.findViewById(R.id.setting_switch3);
-                helper.crat(new settings(GlobalVariable.getInstance().getAccount(),tmp1.isChecked(),tmp2.isChecked(),tmp3.isChecked()));
+            public void run() {
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(!GlobalVariable.getInstance().getLoginState())
+                        {
+                            Toast.makeText(getActivity(),"请前往个人中心进行登录",Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        helper.crat(new settings(GlobalVariable.getInstance().getAccount(),
+                                tmp1.isChecked(),
+                                tmp2.isChecked(),
+                                tmp3.isChecked()));
+                        Toast.makeText(getActivity(),"保存成功",Toast.LENGTH_SHORT).show();
+                    }
+                });
+                daynight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                        updatetheme(b);
+                    }
+                });
             }
         });
         return view;
@@ -98,5 +117,17 @@ public class SettingFragment extends Fragment {
         ((Switch)getView().findViewById(R.id.setting_switch1)).setChecked(tmp.gettest1());
         ((Switch)getView().findViewById(R.id.setting_switch2)).setChecked(tmp.gettest2());
         ((Switch)getView().findViewById(R.id.setting_switch3)).setChecked(tmp.gettest3());
+    }
+    public void updatetheme(boolean night)
+    {
+        Log.d("night", String.valueOf(night));
+        Configuration config=new Configuration();
+        if(night)
+        {
+            config.uiMode=32;
+        }
+        else{
+            config.uiMode=16;
+        }
     }
 }

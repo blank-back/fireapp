@@ -32,7 +32,7 @@ public class ThreeFragment extends BaseFragment {
 
     @Override
     protected void initListener(View view) {
-        String[] mtitles={"forlogin","loginal"};
+        String[] mtitles={"forlogin","loginal","manager"};
         mAdapter = new ThreeFragmentPageAdapter(getChildFragmentManager(),mtitles);
         mViewPager.setAdapter(mAdapter);
     }

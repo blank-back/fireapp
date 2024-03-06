@@ -23,7 +23,8 @@
         <activity
             android:name="com.testapp.template.base.BaseActivity"
             android:label="@string/title_activity_base"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="uiMode">
         </activity>
     </application>
 

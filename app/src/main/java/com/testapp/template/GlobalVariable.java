@@ -10,6 +10,7 @@ public class GlobalVariable {
     private boolean login_state;
     private String filepath;
     private String account;
+    private boolean manager;
     private sqlitehelper helpor;
     private globalhelper gh;
     public GlobalVariable() {
@@ -24,6 +25,7 @@ public class GlobalVariable {
             instance.account="";
             instance.helpor=null;
             instance.gh=null;
+            instance.manager=false;
         }
         return instance;
     }
@@ -67,6 +69,18 @@ public class GlobalVariable {
         if(gh!=null)
             gh.crat(this);
     }
+
+    public boolean getManager() {
+        return manager;
+    }
+
+    public void setManager(boolean manager)
+    {
+        this.manager = manager;
+        if(gh!=null)
+            gh.crat(this);
+    }
+
     public void update()
     {
         GlobalVariable tmp=gh.read();
@@ -75,5 +89,7 @@ public class GlobalVariable {
         setLoginState(tmp.getLoginState());
         setAccount(tmp.getAccount());
         setFilepath(tmp.getFilepath());
+        setManager(tmp.getManager());
     }
+
 }
