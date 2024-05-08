@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -22,6 +23,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.testapp.template.GlobalVariable;
 import com.testapp.template.R;
+import com.testapp.template.ui.MainActivity;
+import org.pytorch.IValue;
+import org.pytorch.Tensor;
+import org.pytorch.torchvision.TensorImageUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -102,7 +107,9 @@ public class MainFragment extends Fragment {
                 boolean login_state = globalVariable.getLoginState();
                 if(login_state) {
                     String base64_image = uri2base64(imageuri);
-                    output.setText(base64_image);
+                    //output.setText(base64_image);
+                    eval(imageuri);
+                    //output.setText("分类结果：短路，依据为头部特征与训练样本的相似度");
                 }
                 else
                 {
@@ -133,7 +140,7 @@ public class MainFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-                String result = null;
+        String result = null;
         ByteArrayOutputStream baos = null;
         try {
             if (bitmap != null) {
@@ -176,5 +183,29 @@ public class MainFragment extends Fragment {
             image_ul.setImageURI(data.getData());
             imageuri=data.getData();
         }
+    }
+    public void eval(Uri uri)
+    {
+        Bitmap bitMap = null;
+        try {
+            bitMap = BitmapFactory.decodeStream(getContext().getContentResolver().openInputStream(this.imageuri));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        int width = bitMap.getWidth();
+        int height = bitMap.getHeight();
+        int newWidth = 224;
+        int newHeight = 224;
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth, scaleHeight);
+        bitMap = Bitmap.createBitmap(bitMap, 0, 0, width, height, matrix, true);
+        final Tensor inputTensor = TensorImageUtils.bitmapToFloat32Tensor(bitMap,TensorImageUtils.TORCHVISION_NORM_MEAN_RGB, TensorImageUtils.TORCHVISION_NORM_STD_RGB);
+        final Tensor outputTensor = ((MainActivity)getActivity()).model.forward(IValue.from(inputTensor)).toTensor();
+        float shortcut=outputTensor.getDataAsFloatArray()[0];
+        float burnt=outputTensor.getDataAsFloatArray()[1];
+        Log.d("test",shortcut<burnt?"火烧":"短路");
+        output.setText("识别结果："+(shortcut<burnt?("火烧，可信度："+burnt*100+"%"):("短路，可信度："+shortcut*100+"%")));
     }
 }

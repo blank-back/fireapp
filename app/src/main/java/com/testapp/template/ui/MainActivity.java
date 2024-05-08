@@ -2,6 +2,7 @@ package com.testapp.template.ui;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -34,7 +35,10 @@ import butterknife.BindView;
 
 import java.io.*;
 import java.util.ArrayList;
-
+import org.pytorch.IValue;
+import org.pytorch.Module;
+import org.pytorch.Tensor;
+import org.pytorch.torchvision.TensorImageUtils;
 public class MainActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
     private static final String TAG = "MainActivity";
@@ -87,10 +91,12 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     public OutputStream fout;
     private sqlitehelper mySQLiteOpenHelper;
     private SQLiteDatabase db;
+    public Module model;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initdb();
+        load_mod();
         filePath = Environment.getExternalStorageDirectory().getPath();
         GlobalVariable.getInstance().setsqlite(mySQLiteOpenHelper);
         GlobalVariable.getInstance().update();
@@ -295,5 +301,22 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
             config.uiMode=16;
         }
     }
-
+    private void load_mod()
+    {
+        AssetManager assetManager = getAssets();
+        String modelPath = "mod.pt";
+        File modelFile = new File(getCacheDir(), modelPath);
+        try (InputStream inputStream = assetManager.open(modelPath);
+             FileOutputStream outputStream = new FileOutputStream(modelFile)) {
+            byte[] buffer = new byte[4 * 1024];
+            int read;
+            while ((read = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, read);
+            }
+            outputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        model = Module.load(modelFile.getAbsolutePath());
+    }
 }
