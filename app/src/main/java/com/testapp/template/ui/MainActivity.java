@@ -1,6 +1,8 @@
 package com.testapp.template.ui;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
@@ -129,6 +131,11 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
             ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
         else
             Log.d("Vertify","Permission OK");
+        if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.CAMERA},1);
+        else
+            Log.d("Vertify","Camera Permission OK");
     }
 
     @Override
@@ -318,5 +325,31 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
             e.printStackTrace();
         }
         model = Module.load(modelFile.getAbsolutePath());
+    }
+    @Override
+    public void onRequestPermissionsResult
+            (int requestCode,String[] permissions, int[] grantResults) {
+        if (requestCode == 1) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //权限获取成功
+                Toast.makeText(this, "权限获取成功", Toast.LENGTH_SHORT).show();
+                Log.d("Vertify", "Permission Complete");
+            } else {
+                //权限被拒绝
+                Toast.makeText(this, "权限获取失败", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("提醒");
+                builder.setMessage("请去往设置页为本程序授予权限，否则将无法使用");
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        System.exit(0);
+                    }
+                });
+                AlertDialog alertDialog=builder.create();
+                alertDialog.setCanceledOnTouchOutside(false);
+                Log.d("Vertify", "Camera Permission Over");
+            }
+        }
     }
 }

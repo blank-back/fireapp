@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -31,6 +32,7 @@ import org.pytorch.torchvision.TensorImageUtils;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 
 import static android.util.Base64.DEFAULT;
 import static android.util.Base64.encodeToString;
@@ -68,6 +70,8 @@ public class MainFragment extends Fragment {
     private Uri imageuri;
     private TextView output;
     private Button upload_button;
+    private BottomSheetDialog bottomSheetDialog;
+    private Bitmap pic;
     public static MainFragment newInstance(String param1, String param2) {
         MainFragment fragment = new MainFragment();
         Bundle args = new Bundle();
@@ -95,10 +99,29 @@ public class MainFragment extends Fragment {
         image_ul.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                GetPic(getView());
+                bottomSheetDialog.show();
+                //GetPic();
             }
         });
         output=view.findViewById(R.id.Output);
+        bottomSheetDialog = new BottomSheetDialog(getActivity());
+        bottomSheetDialog.setContentView(R.layout.bottomdialog);
+        TextView camera=bottomSheetDialog.findViewById(R.id.camera);
+        TextView album=bottomSheetDialog.findViewById(R.id.album);
+        camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GetCamera();
+                bottomSheetDialog.dismiss();
+            }
+        });
+        album.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GetPic();
+                bottomSheetDialog.dismiss();
+            }
+        });
         upload_button=view.findViewById(R.id.mainbutton);
         upload_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,9 +129,9 @@ public class MainFragment extends Fragment {
                 GlobalVariable globalVariable = GlobalVariable.getInstance();
                 boolean login_state = globalVariable.getLoginState();
                 if(login_state) {
-                    String base64_image = uri2base64(imageuri);
+                    //String base64_image = uri2base64(imageuri);
                     //output.setText(base64_image);
-                    eval(imageuri);
+                    eval();
                     //output.setText("分类结果：短路，依据为头部特征与训练样本的相似度");
                 }
                 else
@@ -125,10 +148,34 @@ public class MainFragment extends Fragment {
         return view;
     }
 
-    public void GetPic(View view) {
+    public void GetPic() {
         Intent data=new Intent(Intent.ACTION_PICK);
         data.setType("image/*");
         startActivityForResult(data,1);
+    }
+    public void GetCamera() {
+        File outputImage = new File(getActivity().getExternalCacheDir(),"output_image.jpg");
+        try {
+            if(outputImage.exists()){
+                outputImage.delete();
+            }
+            if(outputImage.createNewFile());
+            else {
+                Toast.makeText(getActivity(), "创建缓存文件失败", Toast.LENGTH_LONG).show();
+                return;
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        Log.d("imageuro",outputImage.toString());
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        //imageuri=FileProvider.getUriForFile(getActivity(),"com.testapp.template.fileprovider",outputImage);
+        //Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,imageuri);
+        //startActivityForResult(intent,2);
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, 2);
+        }
     }
     public String uri2base64(Uri uri)
     {
@@ -136,7 +183,7 @@ public class MainFragment extends Fragment {
             return "Nothing valuable for output";
         Bitmap bitmap = null;
         try {
-            bitmap = BitmapFactory.decodeStream(getContext().getContentResolver().openInputStream(this.imageuri));
+            bitmap = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(this.imageuri));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -182,16 +229,29 @@ public class MainFragment extends Fragment {
             Log.d("Picture",data.getData().toString());
             image_ul.setImageURI(data.getData());
             imageuri=data.getData();
+            try {
+                pic = BitmapFactory.decodeStream(getContext().getContentResolver().openInputStream(this.imageuri));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else if(requestCode==2)
+        {
+            //Log.d("Picture",data.getData().toString());
+            //imageuri=data.getData();
+            Log.d("info",imageuri==null?"空的":"获取");
+            Log.d("info",data.getExtras()==null?"空的extra":"获取");
+            Bundle tmp=data.getExtras();
+            //image_ul.setImageURI(imageuri);
+            pic=(Bitmap) tmp.get("data");
+            image_ul.setImageBitmap(pic);
+            Log.d("info", String.valueOf((((Bitmap)tmp.get("data")).getWidth()))+","+String.valueOf((((Bitmap)tmp.get("data")).getHeight())));
+            /*imageuri=data.getData();*/
         }
     }
-    public void eval(Uri uri)
+    public void eval()
     {
-        Bitmap bitMap = null;
-        try {
-            bitMap = BitmapFactory.decodeStream(getContext().getContentResolver().openInputStream(this.imageuri));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Bitmap bitMap = pic;
         int width = bitMap.getWidth();
         int height = bitMap.getHeight();
         int newWidth = 224;
