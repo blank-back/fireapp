@@ -29,6 +29,8 @@ import butterknife.BindString;
 import com.testapp.template.GlobalVariable;
 import com.testapp.template.R;
 import com.testapp.template.base.BaseActivity;
+import com.testapp.template.db.history;
+import com.testapp.template.db.historyhelper;
 import com.testapp.template.db.sqlitehelper;
 import com.testapp.template.fragment.*;
 import com.testapp.template.util.BottomNavigationViewHelper;
@@ -37,6 +39,8 @@ import butterknife.BindView;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
+
 import org.pytorch.IValue;
 import org.pytorch.Module;
 import org.pytorch.Tensor;
@@ -191,29 +195,18 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
             case R.id.nav_one:
                 break;
             case R.id.nav_two:
-                ReadTxtFile tool1 = new ReadTxtFile();
-                String history1 = new String();
-                File file4=new File(filePath+"/accinfo.txt");
-                if(file4.exists()&&file4.length()!=0)
-                    history1 = tool1.readFromFile(filePath+"/accinfo.txt");
-                else {
-                    history1 = "暂无历史";
-                    if(file4.exists())
-                        Log.d("info","history create");
-                    else {
-                        try {
-                            FileWriter fw1 = new FileWriter(file4, false);
-                            fw1.close();
-                        }catch (Exception e)
-                        {
-                            Log.d("info","getex");
-                        }
-                        Log.d("info", filePath + "history failed");
-                    }
+                GlobalVariable globalVariable = GlobalVariable.getInstance();
+                String acc = globalVariable.getAccount();
+                List<history>tmp=new historyhelper(this).searchhis(acc);
+                String date1="";
+                String answertext="";
+                for(int i=0;i<10&&i<tmp.size();i++)
+                {
+                    answertext+="识别结果:"+(tmp.get(tmp.size() - i - 1).getanswer()?"火烧":"短路")+"\n";
+                    date1+=(tmp.get(tmp.size() - i - 1).gettime()+"\n");
                 }
-                TextView textView = findViewById(R.id.history_text);
-                if (textView != null)
-                    textView.setText(history1);
+                ((TextView)findViewById(R.id.datetime)).setText(date1);
+                ((TextView)findViewById(R.id.answertext)).setText(answertext);
                 //((TwoFragment)fragment).setText(history1);
                 //((TwoFragment)mFragment).setText(history1);
                 break;

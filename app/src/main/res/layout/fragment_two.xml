@@ -4,13 +4,38 @@
              android:layout_height="match_parent"
              tools:context="com.testapp.template.fragment.TwoFragment">
 
-    <TextView
-        android:id="@+id/history_text"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="TextView"
-        android:textColor="@color/colorAccent"
-        android:textColorHint="#FFFFFF"
-        android:textSize="18sp"
-        android:visibility="visible" />
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/datetime"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:maxLines="10"
+            android:text="暂无历史"
+            android:inputType="textMultiLine"
+            android:background="@drawable/border1"/>
+
+        <TextView
+            android:id="@+id/answertext"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/border1"
+            android:inputType="textMultiLine"
+            android:text="暂无历史"
+            android:maxLines="10" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="仅显示本帐户下最新十条历史"
+        android:textColor="#B52020"
+        android:textSize="18dp" />
+
 </FrameLayout>

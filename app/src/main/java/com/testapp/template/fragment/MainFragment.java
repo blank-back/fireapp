@@ -24,6 +24,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.testapp.template.GlobalVariable;
 import com.testapp.template.R;
+import com.testapp.template.db.history;
+import com.testapp.template.db.historyhelper;
 import com.testapp.template.ui.MainActivity;
 import org.pytorch.IValue;
 import org.pytorch.Tensor;
@@ -33,6 +35,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 import static android.util.Base64.DEFAULT;
 import static android.util.Base64.encodeToString;
@@ -266,6 +271,13 @@ public class MainFragment extends Fragment {
         float shortcut=outputTensor.getDataAsFloatArray()[0];
         float burnt=outputTensor.getDataAsFloatArray()[1];
         Log.d("test",shortcut<burnt?"火烧":"短路");
+        SimpleDateFormat formatter = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss"); //设置时间格式
+        formatter.setTimeZone(TimeZone.getTimeZone("GMT+08")); //设置时区
+        Date curDate = new Date(System.currentTimeMillis()); //获取当前时间
+        String createDate = formatter.format(curDate);   //格式转换
+        GlobalVariable globalVariable = GlobalVariable.getInstance();
+        String acc = globalVariable.getAccount();
+        new historyhelper(getActivity()).crat(new history(acc,createDate,shortcut<burnt));
         output.setText("识别结果："+(shortcut<burnt?("火烧，可信度："+burnt*100+"%"):("短路，可信度："+shortcut*100+"%")));
     }
 }
