@@ -20,7 +20,8 @@ public class sqlitehelper extends SQLiteOpenHelper {
             "id integer primary key autoincrement," +
             "time datetime," +
             "account text," +
-            "answer text)";
+            "answer text," +
+            "reli real)";
     public static String CREATE_GLOBAL = "create table if not exists global (" +
             "id integer primary key," +
             "login_state bool," +

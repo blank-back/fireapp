@@ -3,12 +3,14 @@ package com.testapp.template.db;
 public class history {
     private String time;
     private String account ;
+    private double reliability;
     private boolean answer;
 
-    public history(String account,String time,boolean answer) {
+    public history(String account,String time,boolean answer,double reliability) {
         this.account = account;
         this.time = time;
         this.answer = answer;
+        this.reliability=reliability;
     }
 
 
@@ -34,5 +36,13 @@ public class history {
 
     public void setaccount(String account) {
         this.account = account;
+    }
+
+    public double getreliability() {
+        return reliability;
+    }
+
+    public void setreliability(double reliability) {
+        this.reliability = reliability;
     }
 }

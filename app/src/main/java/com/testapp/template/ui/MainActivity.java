@@ -135,11 +135,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
             ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
         else
             Log.d("Vertify","Permission OK");
-        if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED)
-            ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.CAMERA},1);
-        else
-            Log.d("Vertify","Camera Permission OK");
+
     }
 
     @Override
@@ -193,20 +189,30 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         Log.d("info", filePath + "history");
         switch (item.getItemId()) {
             case R.id.nav_one:
+                if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA)
+                        != PackageManager.PERMISSION_GRANTED)
+                    ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.CAMERA},1);
+                else
+                    Log.d("Vertify","Camera Permission OK");
                 break;
             case R.id.nav_two:
                 GlobalVariable globalVariable = GlobalVariable.getInstance();
                 String acc = globalVariable.getAccount();
                 List<history>tmp=new historyhelper(this).searchhis(acc);
+                if(tmp==null)
+                    break;
                 String date1="";
                 String answertext="";
+                String relitext="";
                 for(int i=0;i<10&&i<tmp.size();i++)
                 {
                     answertext+="识别结果:"+(tmp.get(tmp.size() - i - 1).getanswer()?"火烧":"短路")+"\n";
                     date1+=(tmp.get(tmp.size() - i - 1).gettime()+"\n");
+                    relitext+=(String.format("%.2f",tmp.get(tmp.size() - i - 1).getreliability())+"\n");
                 }
                 ((TextView)findViewById(R.id.datetime)).setText(date1);
                 ((TextView)findViewById(R.id.answertext)).setText(answertext);
+                ((TextView)findViewById(R.id.reli)).setText(relitext);
                 //((TwoFragment)fragment).setText(history1);
                 //((TwoFragment)mFragment).setText(history1);
                 break;

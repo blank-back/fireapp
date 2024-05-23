@@ -7,6 +7,50 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="仅显示本账户下最新十条历史"
+            android:textColor="#B52020"
+            android:textSize="18dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/titletime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="识别时间" />
+
+            <TextView
+                android:id="@+id/titleanswer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="识别结果" />
+
+            <TextView
+                android:id="@+id/titlereli"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="识别可信度(%)"
+                android:textAlignment="center" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="40dp"
         android:orientation="horizontal">
 
@@ -16,6 +60,7 @@
             android:layout_height="match_parent"
             android:maxLines="10"
             android:text="暂无历史"
+            android:textAlignment="center"
             android:inputType="textMultiLine"
             android:background="@drawable/border1"/>
 
@@ -25,17 +70,20 @@
             android:layout_height="match_parent"
             android:background="@drawable/border1"
             android:inputType="textMultiLine"
+            android:textAlignment="center"
             android:text="暂无历史"
             android:maxLines="10" />
-    </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="仅显示本帐户下最新十条历史"
-        android:textColor="#B52020"
-        android:textSize="18dp" />
+        <TextView
+            android:id="@+id/reli"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="暂无历史"
+            android:textAlignment="center"
+            android:inputType="textMultiLine"
+            android:background="@drawable/border1"
+            android:maxLines="10"/>
+    </LinearLayout>
 
 </FrameLayout>

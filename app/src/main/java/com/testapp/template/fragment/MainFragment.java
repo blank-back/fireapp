@@ -277,7 +277,7 @@ public class MainFragment extends Fragment {
         String createDate = formatter.format(curDate);   //格式转换
         GlobalVariable globalVariable = GlobalVariable.getInstance();
         String acc = globalVariable.getAccount();
-        new historyhelper(getActivity()).crat(new history(acc,createDate,shortcut<burnt));
+        new historyhelper(getActivity()).crat(new history(acc,createDate,shortcut<burnt,shortcut<burnt?(burnt*100):(shortcut*100)));
         output.setText("识别结果："+(shortcut<burnt?("火烧，可信度："+burnt*100+"%"):("短路，可信度："+shortcut*100+"%")));
     }
 }

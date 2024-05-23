@@ -19,6 +19,7 @@ public class historyhelper {
         values.put("account",his.getaccount());
         values.put("time",his.gettime());
         values.put("answer",his.getanswer());
+        values.put("reli",his.getreliability());
         long i=  db.insert("history",null,values);
         return i>-1 ? true : false;
     }
@@ -32,7 +33,8 @@ public class historyhelper {
                 String acc= query.getString(1);
                 String time = query.getString(2);
                 boolean answer = query.getInt(3) == 1 ? true : false;
-                result.add(new history(time, acc, answer));
+                double reli=query.getDouble(4);
+                result.add(new history(time, acc, answer,reli));
             } while (query.moveToNext());
         } else {
             return null;
